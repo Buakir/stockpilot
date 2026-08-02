@@ -14,23 +14,13 @@ import bcrypt from "bcryptjs";
 
 import "./load-env";
 
+import { CATALOG } from "./catalog";
 import type { ProductStatus, UserRole } from "../lib/types";
 
 /** Semilla fija: dos corridas del seed producen el mismo catálogo. */
 const SEED = 20260802;
 const PRODUCT_COUNT = 140;
 const BCRYPT_ROUNDS = 10;
-
-const CATEGORIES: ReadonlyArray<{ name: string; description: string }> = [
-  { name: "Herramientas manuales", description: "Llaves, destornilladores, alicates y martillos." },
-  { name: "Herramientas eléctricas", description: "Taladros, sierras, lijadoras y accesorios." },
-  { name: "Ferretería general", description: "Tornillería, fijaciones y elementos de sujeción." },
-  { name: "Pinturas y solventes", description: "Látex, esmaltes, barnices, diluyentes y rodillos." },
-  { name: "Electricidad", description: "Cables, tableros, enchufes, llaves térmicas e iluminación." },
-  { name: "Gasfitería", description: "Cañerías, fittings, grifería y sellos." },
-  { name: "Jardín y exterior", description: "Riego, cortadoras de pasto y mobiliario de patio." },
-  { name: "Seguridad industrial", description: "Cascos, guantes, lentes y calzado de protección." },
-];
 
 const DEMO_USERS: ReadonlyArray<{ email: string; name: string; role: UserRole }> = [
   { email: "admin@stockpilot.dev", name: "Alicia Admin", role: "admin" },
@@ -54,6 +44,26 @@ function buildSku(categoryName: string, index: number): string {
     .slice(0, 3)
     .toUpperCase();
   return `${prefix}-${String(index).padStart(4, "0")}`;
+}
+
+/**
+ * Precio de retail plausible, en pesos.
+ *
+ * Un rango uniforme entre 990 y 480.000 deja cintas de enmascarar a $370.000.
+ * Con tramos ponderados la mayoría de los productos queda barata y sólo unos
+ * pocos son caros, que es como se distribuye un catálogo real. El valor se
+ * redondea para que termine en 90, como los precios de vitrina.
+ */
+function buildPrice(): number {
+  const [min, max] = faker.helpers.weightedArrayElement<[number, number]>([
+    { weight: 45, value: [990, 14_990] },
+    { weight: 35, value: [14_990, 79_990] },
+    { weight: 15, value: [79_990, 249_990] },
+    { weight: 5, value: [249_990, 899_990] },
+  ]);
+  const raw = faker.number.int({ min, max });
+  const step = raw < 20_000 ? 100 : 1_000;
+  return Math.max(990, Math.round(raw / step) * step - 10);
 }
 
 async function main(): Promise<void> {
@@ -83,7 +93,7 @@ async function main(): Promise<void> {
     }
 
     const categoryIds: number[] = [];
-    for (const category of CATEGORIES) {
+    for (const category of CATALOG) {
       const { rows } = await client.query<{ id: number }>(
         `INSERT INTO categories (name, description)
          VALUES ($1, $2)
@@ -98,8 +108,8 @@ async function main(): Promise<void> {
     const editorIds = userIds.slice(0, 2);
 
     for (let i = 1; i <= PRODUCT_COUNT; i += 1) {
-      const categoryIndex = faker.number.int({ min: 0, max: CATEGORIES.length - 1 });
-      const category = CATEGORIES[categoryIndex]!;
+      const categoryIndex = faker.number.int({ min: 0, max: CATALOG.length - 1 });
+      const category = CATALOG[categoryIndex]!;
       const categoryId = categoryIds[categoryIndex]!;
 
       // ~12% descontinuados, y de esos la mayoría sin stock: da variedad a los
@@ -118,16 +128,20 @@ async function main(): Promise<void> {
 
       const createdAt = faker.date.between({ from: "2025-01-01", to: "2026-07-15" });
 
+      const item = faker.helpers.arrayElement(category.items);
+      const variant = faker.helpers.arrayElement(category.variants);
+
       const { rows } = await client.query<{ id: number }>(
         `INSERT INTO products (sku, name, description, category_id, price, stock, status, created_at, updated_at)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $8)
          RETURNING id`,
         [
           buildSku(category.name, i),
-          faker.commerce.productName(),
-          faker.commerce.productDescription(),
+          `${item} ${variant}`,
+          `${item} para uso ${faker.helpers.arrayElement(["profesional", "doméstico", "industrial", "general"])}. ` +
+            `Línea ${category.name.toLowerCase()}, presentación ${variant}.`,
           categoryId,
-          faker.commerce.price({ min: 990, max: 480000, dec: 2 }),
+          buildPrice(),
           stock,
           status,
           createdAt,
