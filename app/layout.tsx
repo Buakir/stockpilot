@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
@@ -22,10 +23,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={cn("font-sans", geist.variable)}>
+    // suppressHydrationWarning: next-themes escribe la clase del tema en <html>
+    // antes de hidratar, así que el markup del servidor no coincide a propósito.
+    <html lang="es" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body className="bg-background text-foreground min-h-screen antialiased">
-        {children}
-        <Toaster richColors position="top-right" />
+        <ThemeProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   );
