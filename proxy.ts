@@ -6,9 +6,12 @@ import { authConfig } from "@/lib/auth.config";
 /**
  * Protección de rutas.
  *
- * Usa sólo `authConfig` (sin el provider de credenciales) porque el middleware
- * corre en Edge y no puede cargar `pg` ni `bcrypt`. Acá se decide *si hay
- * sesión*; el control de *qué puede hacer* cada rol se aplica en cada API route.
+ * Desde Next.js 16 esta capa se llama "proxy" (antes `middleware.ts`); la
+ * funcionalidad es la misma. Usa sólo `authConfig` (sin el provider de
+ * credenciales) porque corre en Edge y no puede cargar `pg` ni `bcrypt`.
+ *
+ * Acá se decide *si hay sesión*. El control de *qué puede hacer* cada rol se
+ * aplica en cada API route, que es donde no se puede eludir.
  */
 const { auth } = NextAuth(authConfig);
 
@@ -45,5 +48,7 @@ export const config = {
    * archivos estáticos. Las rutas `/api/*` propias sí pasan por acá, para que
    * una request sin sesión no llegue nunca a tocar la base.
    */
-  matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: [
+    "/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

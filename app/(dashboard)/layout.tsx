@@ -17,12 +17,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <header className="bg-background/95 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 border-b backdrop-blur">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4">
           <MainNav />
-          <UserMenu
-            name={user.name}
-            email={user.email}
-            role={user.role}
-            onLogout={logoutAction}
-          />
+          <UserMenu name={user.name} email={user.email} role={user.role} onLogout={logoutAction} />
         </div>
       </header>
 

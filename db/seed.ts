@@ -114,9 +114,8 @@ async function main(): Promise<void> {
 
       // ~12% descontinuados, y de esos la mayoría sin stock: da variedad a los
       // filtros y al panel de "sin stock" del dashboard.
-      const status: ProductStatus = faker.number.int({ min: 1, max: 100 }) <= 12
-        ? "discontinued"
-        : "active";
+      const status: ProductStatus =
+        faker.number.int({ min: 1, max: 100 }) <= 12 ? "discontinued" : "active";
       const stock =
         status === "discontinued"
           ? faker.number.int({ min: 0, max: 5 })

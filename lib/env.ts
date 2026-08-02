@@ -24,7 +24,9 @@ const parsed = envSchema.safeParse({
 });
 
 if (!parsed.success) {
-  const detail = parsed.error.issues.map((issue) => `  - ${issue.path.join(".")}: ${issue.message}`);
+  const detail = parsed.error.issues.map(
+    (issue) => `  - ${issue.path.join(".")}: ${issue.message}`,
+  );
   throw new Error(`Variables de entorno inválidas:\n${detail.join("\n")}`);
 }
 

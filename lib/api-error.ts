@@ -61,7 +61,11 @@ export function toErrorResponse(error: unknown): NextResponse<ApiErrorBody> {
   if (error instanceof ApiError) {
     return NextResponse.json(
       {
-        error: { code: error.code, message: error.message, ...(error.details && { details: error.details }) },
+        error: {
+          code: error.code,
+          message: error.message,
+          ...(error.details && { details: error.details }),
+        },
       },
       { status: error.status },
     );

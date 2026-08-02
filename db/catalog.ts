@@ -70,7 +70,15 @@ export const CATALOG: readonly CatalogCategory[] = [
       "Abrazaderas metálicas",
       "Cadena galvanizada",
     ],
-    variants: ["x100 unidades", "x250 unidades", "1/4\"", "3/8\"", "5/16\"", "galvanizado", "inoxidable"],
+    variants: [
+      "x100 unidades",
+      "x250 unidades",
+      '1/4"',
+      '3/8"',
+      '5/16"',
+      "galvanizado",
+      "inoxidable",
+    ],
   },
   {
     name: "Pinturas y solventes",
@@ -121,7 +129,7 @@ export const CATALOG: readonly CatalogCategory[] = [
       "Válvula de retención",
       "Kit de reparación de estanque",
     ],
-    variants: ['1/2"', '3/4"', '1"', "2\"", "110 mm", "cromado", "reforzado"],
+    variants: ['1/2"', '3/4"', '1"', '2"', "110 mm", "cromado", "reforzado"],
   },
   {
     name: "Jardín y exterior",
