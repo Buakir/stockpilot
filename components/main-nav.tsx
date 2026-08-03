@@ -1,19 +1,31 @@
 "use client";
 
-import { Boxes, LayoutDashboard, Package, Tags } from "lucide-react";
+import { Boxes, LayoutDashboard, Package, Tags, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import type { Permission } from "@/lib/permissions";
 import { cn } from "@/lib/utils";
 
+/** `permission` marca los ítems que sólo ven ciertos roles. */
 const NAV_ITEMS = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/products", label: "Productos", icon: Package },
   { href: "/categories", label: "Categorías", icon: Tags },
-] as const;
+  { href: "/users", label: "Usuarios", icon: Users, permission: "users:manage" },
+] as const satisfies ReadonlyArray<{
+  href: string;
+  label: string;
+  icon: typeof Boxes;
+  permission?: Permission;
+}>;
 
-export function MainNav() {
+export function MainNav({ permissions }: { permissions: readonly Permission[] }) {
   const pathname = usePathname();
+
+  const visibleItems = NAV_ITEMS.filter(
+    (item) => !("permission" in item) || permissions.includes(item.permission),
+  );
 
   return (
     <nav className="flex items-center gap-1">
@@ -24,7 +36,7 @@ export function MainNav() {
         <span className="hidden sm:inline">StockPilot</span>
       </Link>
 
-      {NAV_ITEMS.map((item) => {
+      {visibleItems.map((item) => {
         // "/" sólo coincide exacto; el resto también con sus subrutas.
         const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
         const Icon = item.icon;
