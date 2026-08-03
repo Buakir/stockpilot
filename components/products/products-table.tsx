@@ -1,11 +1,20 @@
 "use client";
 
-import { ArrowDown, ArrowUp, ChevronsUpDown, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronsUpDown,
+  MoreHorizontal,
+  Pencil,
+  PackagePlus,
+  Trash2,
+} from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { ProductDialog } from "@/components/products/product-dialog";
+import { StockDialog } from "@/components/products/stock-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -50,17 +59,20 @@ export function ProductsTable({
   categories,
   canWrite,
   canDelete,
+  canAdjustStock,
 }: {
   products: ProductWithCategory[];
   categories: CategoryWithCount[];
   canWrite: boolean;
   canDelete: boolean;
+  canAdjustStock: boolean;
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [editing, setEditing] = useState<ProductWithCategory | null>(null);
+  const [adjusting, setAdjusting] = useState<ProductWithCategory | null>(null);
   const [deleting, setDeleting] = useState<ProductWithCategory | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -161,7 +173,7 @@ export function ProductsTable({
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {(canWrite || canDelete) && (
+                  {(canWrite || canDelete || canAdjustStock) && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
@@ -173,6 +185,12 @@ export function ProductsTable({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
+                        {canAdjustStock && (
+                          <DropdownMenuItem onSelect={() => setAdjusting(product)}>
+                            <PackagePlus className="size-4" />
+                            Ajustar stock
+                          </DropdownMenuItem>
+                        )}
                         {canWrite && (
                           <DropdownMenuItem onSelect={() => setEditing(product)}>
                             <Pencil className="size-4" />
@@ -204,6 +222,14 @@ export function ProductsTable({
           onOpenChange={(open) => !open && setEditing(null)}
           categories={categories}
           product={editing}
+        />
+      )}
+
+      {adjusting && (
+        <StockDialog
+          open
+          onOpenChange={(open) => !open && setAdjusting(null)}
+          product={adjusting}
         />
       )}
 

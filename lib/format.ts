@@ -56,3 +56,22 @@ export function formatDate(value: Date | string): string {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   return `${day}/${month}/${date.getFullYear()}`;
 }
+
+/**
+ * Fecha y hora, dd/mm/aaaa HH:MM.
+ *
+ * Se usa en el historial de movimientos, que se carga por fetch después de
+ * montar: al renderizarse sólo en el cliente no hay riesgo de mismatch aunque
+ * la zona horaria del navegador no sea la del servidor.
+ */
+export function formatDateTime(value: Date | string): string {
+  const date = value instanceof Date ? value : new Date(value);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${formatDate(date)} ${hours}:${minutes}`;
+}
+
+/** Delta de un movimiento, siempre con signo: 12 → "+12", -5 → "−5". */
+export function formatDelta(value: number): string {
+  return value > 0 ? `+${formatNumber(value)}` : `−${formatNumber(Math.abs(value))}`;
+}

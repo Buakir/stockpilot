@@ -31,6 +31,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
   const canWrite = can(user.role, "products:write");
   const canDelete = can(user.role, "products:delete");
+  const canAdjustStock = can(user.role, "stock:adjust");
 
   return (
     <div className="space-y-6">
@@ -55,6 +56,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
           categories={categories}
           canWrite={canWrite}
           canDelete={canDelete}
+          canAdjustStock={canAdjustStock}
         />
       </Suspense>
 
