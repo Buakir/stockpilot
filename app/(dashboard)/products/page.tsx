@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { PaginationControls } from "@/components/pagination-controls";
+import { ExportButton } from "@/components/products/export-button";
+import { ImportButton } from "@/components/products/import-button";
 import { NewProductButton } from "@/components/products/new-product-button";
 import { ProductFilters } from "@/components/products/product-filters";
 import { ProductsTable } from "@/components/products/products-table";
@@ -32,6 +34,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const canWrite = can(user.role, "products:write");
   const canDelete = can(user.role, "products:delete");
   const canAdjustStock = can(user.role, "stock:adjust");
+  const canImport = can(user.role, "products:import");
 
   return (
     <div className="space-y-6">
@@ -42,7 +45,13 @@ export default async function ProductsPage({ searchParams }: PageProps) {
             Catálogo completo del inventario. Buscá, filtrá y ordená el listado.
           </p>
         </div>
-        {canWrite && <NewProductButton categories={categories} />}
+        <div className="flex flex-wrap items-center gap-2">
+          <Suspense fallback={<Skeleton className="h-9 w-32" />}>
+            <ExportButton />
+          </Suspense>
+          {canImport && <ImportButton />}
+          {canWrite && <NewProductButton categories={categories} />}
+        </div>
       </div>
 
       {/* Los filtros leen useSearchParams, que exige un límite de Suspense. */}

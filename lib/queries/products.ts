@@ -27,16 +27,21 @@ const SORT_COLUMNS: Record<ProductSortField, string> = {
 
 type ProductListRow = ProductWithCategory & { total_count: number };
 
+/** Los filtros del listado, sin orden ni paginación. */
+type ProductFilters = Pick<
+  ProductQuery,
+  "q" | "categoryId" | "status" | "minPrice" | "maxPrice" | "lowStock"
+>;
+
 /**
- * Listado de productos con filtros combinables y paginación.
+ * Construye la cláusula WHERE y acumula los parámetros en `params`.
  *
- * El total de filas se calcula con `count(*) OVER ()` en la misma consulta:
- * una sola ida a la base en vez de un SELECT de datos más un SELECT de conteo
- * que tendrían que repetir exactamente el mismo WHERE.
+ * Vive aparte porque el listado y la exportación tienen que filtrar
+ * exactamente igual: si divergieran, el CSV que baja el usuario no
+ * coincidiría con la tabla que está viendo.
  */
-export async function listProducts(filters: ProductQuery): Promise<Paginated<ProductWithCategory>> {
+function buildWhereClause(filters: ProductFilters, params: unknown[]): string {
   const conditions: string[] = [];
-  const params: unknown[] = [];
 
   /** Registra un parámetro y devuelve su placeholder ($1, $2, …). */
   const bind = (value: unknown): string => {
@@ -64,7 +69,25 @@ export async function listProducts(filters: ProductQuery): Promise<Paginated<Pro
     conditions.push(`p.stock < ${bind(LOW_STOCK_THRESHOLD)}`);
   }
 
-  const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+  return conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+}
+
+/**
+ * Listado de productos con filtros combinables y paginación.
+ *
+ * El total de filas se calcula con `count(*) OVER ()` en la misma consulta:
+ * una sola ida a la base en vez de un SELECT de datos más un SELECT de conteo
+ * que tendrían que repetir exactamente el mismo WHERE.
+ */
+export async function listProducts(filters: ProductQuery): Promise<Paginated<ProductWithCategory>> {
+  const params: unknown[] = [];
+  const where = buildWhereClause(filters, params);
+
+  const bind = (value: unknown): string => {
+    params.push(value);
+    return `$${params.length}`;
+  };
+
   const sortColumn = SORT_COLUMNS[filters.sort];
   const direction = filters.order === "asc" ? "ASC" : "DESC";
   const offset = (filters.page - 1) * filters.pageSize;
@@ -100,6 +123,50 @@ export async function listProducts(filters: ProductQuery): Promise<Paginated<Pro
     pageSize: filters.pageSize,
     totalPages: Math.max(1, Math.ceil(total / filters.pageSize)),
   };
+}
+
+/**
+ * Tope de filas por exportación.
+ *
+ * El CSV se arma completo en memoria antes de enviarlo, así que sin límite un
+ * catálogo grande podría tumbar el proceso. 20.000 filas son ~2 MB de texto.
+ */
+export const EXPORT_ROW_LIMIT = 20_000;
+
+/**
+ * Productos que coinciden con los filtros, sin paginar, para exportar.
+ *
+ * Reutiliza `buildWhereClause`, así que el CSV contiene exactamente las mismas
+ * filas que muestra la tabla con esos filtros.
+ */
+export async function listProductsForExport(filters: ProductQuery): Promise<ProductWithCategory[]> {
+  const params: unknown[] = [];
+  const where = buildWhereClause(filters, params);
+
+  const sortColumn = SORT_COLUMNS[filters.sort];
+  const direction = filters.order === "asc" ? "ASC" : "DESC";
+
+  params.push(EXPORT_ROW_LIMIT);
+
+  return query<ProductWithCategory>(
+    `SELECT p.id,
+            p.sku,
+            p.name,
+            p.description,
+            p.category_id,
+            p.price,
+            p.stock,
+            p.status,
+            p.created_at,
+            p.updated_at,
+            c.name AS category_name
+       FROM products p
+       LEFT JOIN categories c ON c.id = p.category_id
+       ${where}
+      ORDER BY ${sortColumn} ${direction}, p.id DESC
+      LIMIT $${params.length}`,
+    params,
+  );
 }
 
 export async function getProductById(id: number): Promise<ProductWithCategory | null> {

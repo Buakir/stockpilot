@@ -4,6 +4,7 @@ import { Search, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
+import { AdvancedFilters, type AdvancedFilterValues } from "@/components/products/advanced-filters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,6 +20,9 @@ import type { CategoryWithCount } from "@/lib/types";
 const ALL = "__all__";
 
 const SEARCH_DEBOUNCE_MS = 350;
+
+/** Parámetros que cuentan como filtro y que borra el botón "Limpiar". */
+const FILTER_KEYS = ["q", "categoryId", "status", "minPrice", "maxPrice", "lowStock"] as const;
 
 export function ProductFilters({ categories }: { categories: CategoryWithCount[] }) {
   const router = useRouter();
@@ -67,7 +71,17 @@ export function ProductFilters({ categories }: { categories: CategoryWithCount[]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
-  const hasFilters = ["q", "categoryId", "status"].some((key) => searchParams.get(key));
+  const hasFilters = FILTER_KEYS.some((key) => searchParams.get(key));
+
+  const advancedValues: AdvancedFilterValues = {
+    minPrice: searchParams.get("minPrice") ?? "",
+    maxPrice: searchParams.get("maxPrice") ?? "",
+    lowStock: searchParams.get("lowStock") === "true",
+  };
+
+  function clearAll(): void {
+    applyFilter(Object.fromEntries(FILTER_KEYS.map((key) => [key, null])));
+  }
 
   return (
     <div className="flex flex-wrap items-center gap-2" data-pending={isPending ? "" : undefined}>
@@ -113,12 +127,20 @@ export function ProductFilters({ categories }: { categories: CategoryWithCount[]
         </SelectContent>
       </Select>
 
+      <AdvancedFilters
+        values={advancedValues}
+        onApply={(next) =>
+          applyFilter({
+            minPrice: next.minPrice || null,
+            maxPrice: next.maxPrice || null,
+            lowStock: next.lowStock ? "true" : null,
+          })
+        }
+        onClear={() => applyFilter({ minPrice: null, maxPrice: null, lowStock: null })}
+      />
+
       {hasFilters && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => applyFilter({ q: null, categoryId: null, status: null })}
-        >
+        <Button variant="ghost" size="sm" onClick={clearAll}>
           <X className="size-4" />
           Limpiar
         </Button>
