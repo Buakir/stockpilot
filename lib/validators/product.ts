@@ -40,7 +40,9 @@ const productFields = {
     .min(0, "El precio no puede ser negativo.")
     .max(MAX_PRICE, "El precio es demasiado alto.")
     // NUMERIC(12,2): más decimales se truncarían silenciosamente en la base.
-    .refine((value) => Number.isInteger(Math.round(value * 100)), {
+    // Se compara contra una tolerancia porque el producto por 100 no es exacto
+    // en punto flotante: 10.99 * 100 da 1098.9999999999998, no 1099.
+    .refine((value) => Math.abs(value * 100 - Math.round(value * 100)) < 1e-9, {
       message: "El precio admite como máximo 2 decimales.",
     }),
   stock: z.coerce
