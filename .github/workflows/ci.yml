@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Un push nuevo sobre la misma rama cancela la corrida anterior: no tiene
+# sentido gastar minutos verificando un commit que ya quedó atrás.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, tipos, tests y build
+    runs-on: ubuntu-latest
+
+    env:
+      # `lib/env.ts` valida las variables al importarse, así que el build las
+      # necesita presentes aunque acá nunca se abra una conexión: los tests son
+      # de lógica pura y el build sólo compila. Son valores de relleno, no
+      # secretos: la base real vive en las variables de entorno de Vercel.
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      DATABASE_SSL: "false"
+      AUTH_SECRET: valor-de-relleno-solo-para-que-el-build-pase-la-validacion
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # `npm ci` en vez de `npm install`: instala exactamente lo que fija el
+      # lockfile y falla si package.json y package-lock.json divergen.
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Comprobación de tipos
+        run: npm run typecheck
+
+      - name: Formato
+        run: npm run format:check
+
+      - name: Tests
+        run: npm test
+
+      - name: Build de producción
+        run: npm run build

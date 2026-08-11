@@ -6,6 +6,7 @@ dashboard con métricas agregadas.
 
 > Proyecto personal de portafolio. Todos los datos son ficticios y generados por el seed.
 
+[![CI](https://github.com/Buakir/stockpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/Buakir/stockpilot/actions/workflows/ci.yml)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
@@ -14,9 +15,9 @@ dashboard con métricas agregadas.
 ![Zod](https://img.shields.io/badge/Zod-4-3E67B1?logo=zod&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-98%20tests-6E9F18?logo=vitest&logoColor=white)
 
-<!-- TODO: reemplazar por una captura real del dashboard una vez desplegado. -->
+**Demo:** _pendiente de despliegue._ · **Cuenta de prueba:** `viewer@stockpilot.dev` / `demo1234`
 
-**Demo:** _pendiente de despliegue._
+![Dashboard de StockPilot: tarjetas con el total de productos, valor de inventario, productos sin stock y con stock bajo, gráfico de productos por categoría y lista de reposición](docs/screenshots/dashboard.png)
 
 ---
 
@@ -32,6 +33,11 @@ dashboard con métricas agregadas.
 - **Dashboard** — totales, valor de inventario, productos agotados y con stock bajo, gráfico
   de productos por categoría y lista de reposición.
 - **Usuarios y roles** — tres niveles de permiso, gestionables desde la app por un admin.
+
+|                                                                                          |                                                                                         |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| ![Listado de productos con buscador, filtros por categoría y estado, y columnas ordenables](docs/screenshots/productos.png) | ![Diálogo de ajuste de stock con entrada/salida, motivo e historial de movimientos](docs/screenshots/stock.png) |
+| Listado con filtros combinables, compartibles por URL                                      | Ajuste de stock con su historial de auditoría                                             |
 
 ## Roles
 
