@@ -14,11 +14,21 @@ types.setTypeParser(types.builtins.NUMERIC, (value) => Number.parseFloat(value))
 types.setTypeParser(types.builtins.INT8, (value) => Number.parseInt(value, 10));
 
 function createPool(): Pool {
+  const isProduction = env.NODE_ENV === "production";
+
   return new Pool({
     connectionString: env.DATABASE_URL,
     ssl: env.DATABASE_SSL ? { rejectUnauthorized: false } : undefined,
-    max: 10,
-    idleTimeoutMillis: 30_000,
+    /**
+     * En producción la app corre en funciones serverless: hay muchas
+     * instancias, cada una con su propio pool, y todas comparten el límite de
+     * conexiones de la base. Un pool chico por instancia escala mejor que uno
+     * grande. En local pasa lo contrario: un solo proceso atiende todo.
+     */
+    max: isProduction ? 3 : 10,
+    // En serverless las instancias se congelan entre requests; conviene soltar
+    // las conexiones ociosas antes que en un servidor de larga vida.
+    idleTimeoutMillis: isProduction ? 10_000 : 30_000,
     connectionTimeoutMillis: 10_000,
   });
 }
