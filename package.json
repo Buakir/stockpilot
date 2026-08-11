@@ -2,6 +2,22 @@
   "name": "stockpilot",
   "version": "0.1.0",
   "private": true,
+  "description": "Gestor de inventario y catálogo de productos con autorización por roles, SQL parametrizado sobre PostgreSQL e importación/exportación CSV.",
+  "author": "Benjamín Abarca <benjamin.abarca.c12@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Buakir/stockpilot.git"
+  },
+  "homepage": "https://github.com/Buakir/stockpilot#readme",
+  "keywords": [
+    "nextjs",
+    "typescript",
+    "postgresql",
+    "rbac",
+    "inventory",
+    "portfolio"
+  ],
   "engines": {
     "node": ">=20"
   },

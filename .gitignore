@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# preferencias locales de herramientas (varían por máquina y por persona)
+.claude/settings.local.json
+.idea/
+.vscode/*
+!.vscode/extensions.json
