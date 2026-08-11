@@ -42,7 +42,13 @@ yarn-error.log*
 next-env.d.ts
 
 # preferencias locales de herramientas (varían por máquina y por persona)
-.claude/settings.local.json
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Configuración de Claude Code. Se mantiene en local pero fuera del repo:
+# es plomería de una herramienta puntual y no le dice nada a quien clone.
+# Las convenciones del proyecto que sí valen para cualquiera —incluidos otros
+# agentes— viven en AGENTS.md, que sigue versionado.
+.claude/
+CLAUDE.md
