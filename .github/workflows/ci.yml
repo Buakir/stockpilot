@@ -36,6 +36,8 @@ jobs:
 
       # `npm ci` en vez de `npm install`: instala exactamente lo que fija el
       # lockfile y falla si package.json y package-lock.json divergen.
+      # Si este paso falla con "Missing: @emnapi/... from lock file", el
+      # lockfile se generó con npm 11.6.2; ver AGENTS.md § Dependencias.
       - name: Instalar dependencias
         run: npm ci
 

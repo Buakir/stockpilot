@@ -58,6 +58,26 @@ PostgreSQL no llegan al cliente: se registran en el servidor y se responde un 50
   zona horaria del proceso.
 - El estado de un listado (filtros, orden, página) vive en la query string, no en `useState`.
 
+## Dependencias
+
+**No usar npm 11.6.2 para regenerar el lockfile.** Esa versión poda las dependencias de
+`@img/sharp-wasm32` (`@emnapi/core`, `@emnapi/runtime`): deja declarado el paquete pero no
+lo que necesita, y el resultado es un grafo incompleto que hace fallar `npm ci` en CI con
+`Missing: @emnapi/runtime from lock file`. npm 10.8.2 y 11.19.0 lo resuelven bien, y todas
+esas versiones *consumen* el lockfile correcto sin problema — el bug es sólo al generarlo.
+
+Si `npm install` deja el lockfile sin esas entradas, regenerarlo con una versión sana:
+
+```bash
+npm install -g npm@latest && npm install --package-lock-only
+```
+
+Para verificar antes de commitear:
+
+```bash
+grep -c '"node_modules/@emnapi/' package-lock.json   # tiene que dar 3, no 1
+```
+
 ## Base de datos
 
 - El esquema sólo cambia por **una migración nueva** en `db/migrations/`. Las ya aplicadas
