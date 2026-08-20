@@ -9,6 +9,18 @@ import type { NextAuthConfig } from "next-auth";
  * se importa desde Node.
  */
 export const authConfig = {
+  /**
+   * Auth.js confía en el header `Host` sólo si detecta la plataforma leyendo
+   * `process.env.VERCEL`. Si el proyecto no expone las variables de sistema de
+   * Vercel, esa detección falla y toda ruta de `/api/auth/*` responde 500 con
+   * `UntrustedHost`, aunque el resto de la app funcione.
+   *
+   * Declararlo acá hace que el despliegue no dependa de esa detección. Es
+   * seguro porque la app vive detrás de un proxy que valida el `Host` contra
+   * los dominios del proyecto; en un servidor expuesto directamente a
+   * cabeceras arbitrarias habría que restringirlo.
+   */
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
