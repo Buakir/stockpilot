@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     // Un admin que se quita a sí mismo el rol perdería el acceso en la
     // siguiente request, sin forma de revertirlo desde la propia app.
     if (id === actor.id && input.role !== undefined && input.role !== "admin") {
-      throw conflict("No podés quitarte a vos mismo el rol de administrador.");
+      throw conflict("No puedes quitarte a ti mismo el rol de administrador.");
     }
 
     if (input.email !== undefined) {
@@ -51,7 +51,7 @@ export async function DELETE(_request: NextRequest, context: RouteContext) {
 
     const id = await parseId(context);
     if (id === actor.id) {
-      throw conflict("No podés eliminar tu propia cuenta.");
+      throw conflict("No puedes eliminar tu propia cuenta.");
     }
 
     await deleteUser(id);

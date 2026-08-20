@@ -25,10 +25,10 @@ export class ApiError extends Error {
 export const badRequest = (message: string, details?: FieldErrors): ApiError =>
   new ApiError(400, "BAD_REQUEST", message, details);
 
-export const unauthorized = (message = "Necesitás iniciar sesión."): ApiError =>
+export const unauthorized = (message = "Necesitas iniciar sesión."): ApiError =>
   new ApiError(401, "UNAUTHORIZED", message);
 
-export const forbidden = (message = "No tenés permisos para realizar esta acción."): ApiError =>
+export const forbidden = (message = "No tienes permisos para realizar esta acción."): ApiError =>
   new ApiError(403, "FORBIDDEN", message);
 
 export const notFound = (message = "El recurso no existe."): ApiError =>

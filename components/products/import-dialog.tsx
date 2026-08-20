@@ -48,7 +48,7 @@ export function ImportDialog({
 
     const file = inputRef.current?.files?.[0];
     if (!file) {
-      setError("Seleccioná un archivo CSV.");
+      setError("Selecciona un archivo CSV.");
       return;
     }
 
@@ -97,8 +97,8 @@ export function ImportDialog({
           <DialogDescription>
             El CSV debe tener estas columnas:{" "}
             <code className="font-mono text-xs">{IMPORT_HEADERS.join(", ")}</code>. Es el mismo
-            formato que genera &ldquo;Exportar CSV&rdquo;, así que podés exportar, editar y volver a
-            subir.
+            formato que genera &ldquo;Exportar CSV&rdquo;, así que puedes exportar, editar y volver
+            a subir.
           </DialogDescription>
         </DialogHeader>
 

@@ -16,7 +16,7 @@ dashboard con métricas agregadas.
 ![Vitest](https://img.shields.io/badge/Vitest-98%20tests-6E9F18?logo=vitest&logoColor=white)
 
 **▶ Demo en vivo:** <https://stockpilot-aburik-inc.vercel.app>  
-Entrá con `viewer@stockpilot.dev` / `demo1234` para recorrerla sin poder romper nada.
+Entra con `viewer@stockpilot.dev` / `demo1234` para recorrerla sin poder romper nada.
 
 ![Dashboard de StockPilot: tarjetas con el total de productos, valor de inventario, productos sin stock y con stock bajo, gráfico de productos por categoría y lista de reposición](docs/screenshots/dashboard.png)
 
@@ -64,7 +64,7 @@ Todas con la contraseña `demo1234`:
 | Encargado     | `manager@stockpilot.dev` |
 | Solo lectura  | `viewer@stockpilot.dev`  |
 
-Para probar la app sin poder romper nada, entrá con la cuenta de **solo lectura**.
+Para probar la app sin poder romper nada, entra con la cuenta de **solo lectura**.
 
 ---
 
@@ -78,14 +78,14 @@ cd stockpilot
 npm install
 ```
 
-Copiá las variables de entorno y generá un secreto:
+Copia las variables de entorno y genera un secreto:
 
 ```bash
 cp .env.example .env.local
 npx auth secret
 ```
 
-Levantá la base, aplicá las migraciones y cargá los datos de ejemplo:
+Levanta la base, aplica las migraciones y carga los datos de ejemplo:
 
 ```bash
 npm run db:up && npm run db:migrate && npm run db:seed
@@ -239,7 +239,7 @@ eso se verificó manualmente contra la app corriendo.
 
 Pensado para Vercel + PostgreSQL gestionado (Neon o Supabase).
 
-1. Creá la base y copiá su cadena de conexión. En Neon, usá la **pooled connection string**:
+1. Crea la base y copia su cadena de conexión. En Neon, usa la **pooled connection string**:
    cada instancia serverless abre su propio pool y sin el pooler se agotan las conexiones.
 2. En Vercel, configurá las variables de entorno. `DATABASE_URL` y `AUTH_SECRET` hacen falta
    también durante el build, porque `lib/env.ts` las valida al importarse.
@@ -252,7 +252,7 @@ Pensado para Vercel + PostgreSQL gestionado (Neon o Supabase).
 
    `AUTH_URL` no hace falta en Vercel: se infiere del dominio.
 
-3. Aplicá las migraciones apuntando a la base de producción. Las variables del shell tienen
+3. Aplica las migraciones apuntando a la base de producción. Las variables del shell tienen
    prioridad sobre `.env.local`, así que esto funciona sin tocar ningún archivo:
 
    ```bash

@@ -100,7 +100,7 @@ export function UsersTable({
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">
                     {user.name}
-                    {isSelf && <span className="text-muted-foreground ml-2 text-xs">(vos)</span>}
+                    {isSelf && <span className="text-muted-foreground ml-2 text-xs">(tú)</span>}
                   </TableCell>
                   <TableCell className="text-muted-foreground text-sm">{user.email}</TableCell>
                   <TableCell>

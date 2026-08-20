@@ -67,7 +67,7 @@ export default async function DashboardPage() {
           <CardHeader>
             <CardTitle>Productos por categoría</CardTitle>
             <CardDescription>
-              Pasá el cursor por una barra para ver su valor de inventario. Los mismos números, en
+              Pasa el cursor por una barra para ver su valor de inventario. Los mismos números, en
               tabla, están en{" "}
               <Link href="/categories" className="underline underline-offset-4">
                 Categorías

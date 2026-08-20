@@ -32,7 +32,7 @@ const productFields = {
   category_id: z.coerce
     .number()
     .int()
-    .positive("Seleccioná una categoría válida.")
+    .positive("Selecciona una categoría válida.")
     .nullish()
     .transform((value) => value ?? null),
   price: z.coerce

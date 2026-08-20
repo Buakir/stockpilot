@@ -117,7 +117,7 @@ export function ProductsTable({
       <div className="rounded-lg border border-dashed py-16 text-center">
         <p className="font-medium">No hay productos que coincidan con los filtros.</p>
         <p className="text-muted-foreground mt-1 text-sm">
-          Probá con otro término de búsqueda o limpiá los filtros.
+          Prueba con otro término de búsqueda o limpia los filtros.
         </p>
       </div>
     );

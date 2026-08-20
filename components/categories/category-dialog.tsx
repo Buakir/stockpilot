@@ -80,7 +80,7 @@ export function CategoryDialog({ open, onOpenChange, category }: CategoryDialogP
           <DialogTitle>{isEditing ? "Editar categoría" : "Nueva categoría"}</DialogTitle>
           <DialogDescription>
             {isEditing
-              ? `Modificá los datos de ${category.name}.`
+              ? `Modifica los datos de ${category.name}.`
               : "Las categorías agrupan los productos del catálogo."}
           </DialogDescription>
         </DialogHeader>

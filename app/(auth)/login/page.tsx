@@ -29,7 +29,7 @@ export default async function LoginPage({
         <Card>
           <CardHeader>
             <CardTitle>Iniciar sesión</CardTitle>
-            <CardDescription>Accedé al panel de inventario.</CardDescription>
+            <CardDescription>Accede al panel de inventario.</CardDescription>
           </CardHeader>
           <CardContent>
             <LoginForm callbackUrl={callbackUrl ?? "/"} />

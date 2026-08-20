@@ -64,7 +64,7 @@ export const importRowSchema = z.object({
     .string()
     .trim()
     .toUpperCase()
-    .regex(SKU_PATTERN, "SKU inválido: usá entre 2 y 32 caracteres A-Z, 0-9 y guiones."),
+    .regex(SKU_PATTERN, "SKU inválido: usa entre 2 y 32 caracteres A-Z, 0-9 y guiones."),
   nombre: z
     .string()
     .trim()

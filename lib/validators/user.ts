@@ -11,7 +11,7 @@ const passwordSchema = z
   .max(72, "La contraseña no puede superar los 72 caracteres.");
 
 export const createUserSchema = z.object({
-  email: z.email("Ingresá un email válido.").trim().toLowerCase(),
+  email: z.email("Ingresa un email válido.").trim().toLowerCase(),
   name: z.string().trim().min(2, "El nombre debe tener al menos 2 caracteres.").max(80),
   role: z.enum(USER_ROLES),
   password: passwordSchema,
@@ -23,7 +23,7 @@ export const createUserSchema = z.object({
  */
 export const updateUserSchema = z
   .object({
-    email: z.email("Ingresá un email válido.").trim().toLowerCase(),
+    email: z.email("Ingresa un email válido.").trim().toLowerCase(),
     name: z.string().trim().min(2, "El nombre debe tener al menos 2 caracteres.").max(80),
     role: z.enum(USER_ROLES),
     password: passwordSchema.optional(),

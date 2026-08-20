@@ -97,8 +97,8 @@ export function ProductDialog({ open, onOpenChange, categories, product }: Produ
           <DialogTitle>{isEditing ? "Editar producto" : "Nuevo producto"}</DialogTitle>
           <DialogDescription>
             {isEditing
-              ? `Modificá los datos de ${product.sku}.`
-              : "Completá los datos del producto para agregarlo al catálogo."}
+              ? `Modifica los datos de ${product.sku}.`
+              : "Completa los datos del producto para agregarlo al catálogo."}
           </DialogDescription>
         </DialogHeader>
 

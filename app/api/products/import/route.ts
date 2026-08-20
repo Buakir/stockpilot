@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file");
 
     if (!(file instanceof File)) {
-      throw badRequest("Adjuntá un archivo CSV en el campo 'file'.");
+      throw badRequest("Adjunta un archivo CSV en el campo 'file'.");
     }
     if (file.size === 0) {
       throw badRequest("El archivo está vacío.");

@@ -93,7 +93,7 @@ export function UserDialog({
           <DialogTitle>{isEditing ? "Editar usuario" : "Nuevo usuario"}</DialogTitle>
           <DialogDescription>
             {isEditing
-              ? `Modificá los datos de ${user.name}.`
+              ? `Modifica los datos de ${user.name}.`
               : "La contraseña se guarda hasheada con bcrypt."}
           </DialogDescription>
         </DialogHeader>

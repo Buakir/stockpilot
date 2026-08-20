@@ -42,7 +42,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Productos</h1>
           <p className="text-muted-foreground text-sm">
-            Catálogo completo del inventario. Buscá, filtrá y ordená el listado.
+            Catálogo completo del inventario. Busca, filtra y ordena el listado.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">

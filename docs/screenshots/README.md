@@ -13,7 +13,7 @@ que se ve en el repo siga coincidiendo con lo que hace la app.
 
 1. `npm run db:reset` para partir de los datos de ejemplo de siempre.
 2. `npm run dev` y entrar como `admin@stockpilot.dev` / `demo1234`.
-3. **Tema oscuro** (el botón de luna en la barra superior) y ventana ancha. Capturar sólo
+3. **Tema oscuro** (el botón de luna en la barra superior) y ventana ancha. Capturar solo
    el área de contenido, sin la barra del navegador ni el escritorio.
 4. Guardar como PNG con los nombres de la tabla, en esta carpeta.
 

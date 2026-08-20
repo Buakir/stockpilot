@@ -78,7 +78,7 @@ export function CategoriesTable({
       <div className="rounded-lg border border-dashed py-16 text-center">
         <p className="font-medium">Todavía no hay categorías.</p>
         <p className="text-muted-foreground mt-1 text-sm">
-          Creá la primera para empezar a clasificar el catálogo.
+          Crea la primera para empezar a clasificar el catálogo.
         </p>
       </div>
     );
@@ -172,7 +172,7 @@ export function CategoriesTable({
                   <strong>{deleting.name}</strong> tiene {formatNumber(deleting.product_count)}{" "}
                   producto
                   {deleting.product_count === 1 ? "" : "s"}. No se eliminan: quedan como &ldquo;sin
-                  categoría&rdquo; y podés reasignarlos después.
+                  categoría&rdquo; y puedes reasignarlos después.
                 </>
               ) : (
                 <>

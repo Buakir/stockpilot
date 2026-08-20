@@ -102,7 +102,7 @@ export async function importProductsFromCsv(csvText: string): Promise<ImportRepo
     if (row.categoria) {
       const found = categoryByName.get(row.categoria.toLowerCase());
       if (found === undefined) {
-        errors.push(`La categoría "${row.categoria}" no existe. Creála antes de importar.`);
+        errors.push(`La categoría "${row.categoria}" no existe. Créala antes de importar.`);
       } else {
         categoryId = found;
       }

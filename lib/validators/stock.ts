@@ -15,7 +15,7 @@ export const adjustStockSchema = z.object({
   reason: z
     .string()
     .trim()
-    .min(3, "Indicá el motivo del ajuste (mínimo 3 caracteres).")
+    .min(3, "Indica el motivo del ajuste (mínimo 3 caracteres).")
     .max(200, "El motivo no puede superar los 200 caracteres."),
 });
 
