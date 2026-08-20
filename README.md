@@ -15,7 +15,8 @@ dashboard con métricas agregadas.
 ![Zod](https://img.shields.io/badge/Zod-4-3E67B1?logo=zod&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-98%20tests-6E9F18?logo=vitest&logoColor=white)
 
-**Demo:** _pendiente de despliegue._ · **Cuenta de prueba:** `viewer@stockpilot.dev` / `demo1234`
+**▶ Demo en vivo:** <https://stockpilot-aburik-inc.vercel.app>  
+Entrá con `viewer@stockpilot.dev` / `demo1234` para recorrerla sin poder romper nada.
 
 ![Dashboard de StockPilot: tarjetas con el total de productos, valor de inventario, productos sin stock y con stock bajo, gráfico de productos por categoría y lista de reposición](docs/screenshots/dashboard.png)
 
