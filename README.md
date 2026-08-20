@@ -97,7 +97,7 @@ npm run dev
 
 La app queda en <http://localhost:3100>. Se usa el 3100 y no el 3000 porque en la máquina de
 desarrollo ese rango lo tenía tomado Docker Desktop; el puerto se cambia en el script `dev`
-de `package.json` (y en `AUTH_URL`, si corrés en local).
+de `package.json` (y en `AUTH_URL`, si corres en local).
 
 ### Scripts
 
@@ -241,7 +241,7 @@ Pensado para Vercel + PostgreSQL gestionado (Neon o Supabase).
 
 1. Crea la base y copia su cadena de conexión. En Neon, usa la **pooled connection string**:
    cada instancia serverless abre su propio pool y sin el pooler se agotan las conexiones.
-2. En Vercel, configurá las variables de entorno. `DATABASE_URL` y `AUTH_SECRET` hacen falta
+2. En Vercel, configura las variables de entorno. `DATABASE_URL` y `AUTH_SECRET` hacen falta
    también durante el build, porque `lib/env.ts` las valida al importarse.
 
    | Variable       | Valor                            |
@@ -265,7 +265,7 @@ Pensado para Vercel + PostgreSQL gestionado (Neon o Supabase).
    $env:DATABASE_URL="<cadena-de-produccion>"; $env:DATABASE_SSL="true"; npm run db:migrate
    ```
 
-4. Opcionalmente, sembrá los datos de demostración con el mismo procedimiento y `db:seed`.
+4. Opcionalmente, siembra los datos de demostración con el mismo procedimiento y `db:seed`.
    Es destructivo: no lo corras sobre datos que quieras conservar.
 
 ## Licencia
